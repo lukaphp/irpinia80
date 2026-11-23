@@ -238,11 +238,11 @@ function resize() {
   const w2 = sg.clientWidth; sg.width = Math.round(w2 * DPR); sg.height = Math.round(w2 * SH / 960 * DPR); sg.style.height = (w2 * SH / 960) + "px";
 }
 /* audio dei 90 secondi, agganciato al tempo della simulazione */
-const snd = $("#snd"); let audioOn = false;
+const snd = $("#snd"), AOFF = 10; let audioOn = false; /* nell'audio la scossa si sente dal secondo 10 */
 function syncAudio() {
-  if (!audioOn || !playing || T >= T1) { if (!snd.paused) snd.pause(); return; }
+  if (!audioOn || !playing || T >= T1 || T + AOFF >= snd.duration) { if (!snd.paused) snd.pause(); return; }
   if (snd.playbackRate !== speed) snd.playbackRate = speed;
-  if (Math.abs(snd.currentTime - T) > 0.35) snd.currentTime = T;
+  if (Math.abs(snd.currentTime - (T + AOFF)) > 0.35) snd.currentTime = T + AOFF;
   if (snd.paused) snd.play().catch(() => {});
 }
 function frame(ts) {
