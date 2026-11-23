@@ -19,23 +19,23 @@ const SEGS = [
 
 /* r: 1 = etichetta sempre, 2 = etichetta se c'è spazio, 0 = nessuna; city = città grande */
 const TOWNS = [
-  { n: "Conza della Campania", lat: 40.8706, lon: 15.3308, r: 1, note: "Vicina all'epicentro. Intensità X MCS: l'abitato fu evacuato e i pochi edifici rimasti in piedi furono demoliti." },
-  { n: "Lioni", lat: 40.878, lon: 15.1895, r: 1, note: "Distrutta. Intensità X MCS, tra i sei comuni con i massimi effetti." },
-  { n: "Sant'Angelo dei Lombardi", lat: 40.9277, lon: 15.1777, r: 1, note: "Circa 300 morti, tra cui 27 bambini di un orfanotrofio. L'80% del paese distrutto." },
-  { n: "Teora", lat: 40.8458, lon: 15.2542, r: 2, note: "Tra i tre comuni dell'epicentro. Distrutta." },
-  { n: "Castelnuovo di Conza", lat: 40.8117, lon: 15.3367, r: 2, note: "Tra i comuni più duramente colpiti, vicino all'epicentro." },
-  { n: "Laviano", lat: 40.7868, lon: 15.3092, r: 1, note: "Tra i comuni più duramente colpiti, in provincia di Salerno." },
-  { n: "Santomenna", lat: 40.74, lon: 15.22, r: 0, note: "Comune del cratere, tra i più colpiti." },
-  { n: "Senerchia", lat: 40.7714, lon: 15.1836, r: 0, note: "Comune del cratere, tra i più colpiti." },
-  { n: "Balvano", lat: 40.6492, lon: 15.5042, r: 1, note: "Durante la messa crolla la chiesa di Santa Maria Assunta: tra 66 e 77 morti secondo le fonti, in gran parte bambini e ragazzi." },
-  { n: "Muro Lucano", lat: 40.7517, lon: 15.4856, r: 2, note: "Quasi rasa al suolo. In tutta la Basilicata le vittime furono circa 140." },
-  { n: "Calitri", lat: 40.9006, lon: 15.4425, r: 2, note: "Gravemente danneggiata." },
-  { n: "Bisaccia", lat: 41.0092, lon: 15.3733, r: 2, note: "Gravemente danneggiata." },
-  { n: "Napoli", lat: 40.8518, lon: 14.2681, r: 1, city: 1, note: "A 80 km dall'epicentro. In via Stadera, a Poggioreale, crolla un palazzo: 52 morti." },
-  { n: "Salerno", lat: 40.6824, lon: 14.7681, r: 1, city: 1, note: "Fuori dal cratere, ma la scossa è forte." },
+  { n: "Conza della Campania", lat: 40.8706, lon: 15.3308, r: 1, note: "A ridosso dell'epicentro, intensità X MCS. Il paese fu evacuato e i pochi edifici rimasti in piedi vennero demoliti." },
+  { n: "Lioni", lat: 40.878, lon: 15.1895, r: 1, note: "Rasa al suolo. Con intensità X MCS è tra i sei comuni che subirono gli effetti più gravi." },
+  { n: "Sant'Angelo dei Lombardi", lat: 40.9277, lon: 15.1777, r: 1, note: "Circa 300 morti, tra loro 27 bambini dell'orfanotrofio. L'80% del paese andò distrutto." },
+  { n: "Teora", lat: 40.8458, lon: 15.2542, r: 2, note: "Uno dei tre comuni dell'epicentro. Il paese andò distrutto." },
+  { n: "Castelnuovo di Conza", lat: 40.8117, lon: 15.3367, r: 2, note: "A pochi chilometri dall'epicentro, fra i comuni più colpiti." },
+  { n: "Laviano", lat: 40.7868, lon: 15.3092, r: 1, note: "In provincia di Salerno, fra i comuni più duramente colpiti." },
+  { n: "Santomenna", lat: 40.74, lon: 15.22, r: 0, note: "Comune del cratere, fra i più colpiti." },
+  { n: "Senerchia", lat: 40.7714, lon: 15.1836, r: 0, note: "Comune del cratere, fra i più colpiti." },
+  { n: "Balvano", lat: 40.6492, lon: 15.5042, r: 1, note: "La chiesa di Santa Maria Assunta crolla durante la messa della domenica sera. Muoiono tra 66 e 77 persone, a seconda delle fonti: quasi tutti bambini e ragazzi." },
+  { n: "Muro Lucano", lat: 40.7517, lon: 15.4856, r: 2, note: "Quasi rasa al suolo. In tutta la Basilicata i morti furono circa 140." },
+  { n: "Calitri", lat: 40.9006, lon: 15.4425, r: 2, note: "Gravi danni a gran parte del paese." },
+  { n: "Bisaccia", lat: 41.0092, lon: 15.3733, r: 2, note: "Gravi danni a gran parte del paese." },
+  { n: "Napoli", lat: 40.8518, lon: 14.2681, r: 1, city: 1, note: "A 80 km dall'epicentro. A Poggioreale, in via Stadera, crolla un intero palazzo: 52 morti." },
+  { n: "Salerno", lat: 40.6824, lon: 14.7681, r: 1, city: 1, note: "Fuori dal cratere, ma la scossa si avverte con violenza." },
   { n: "Avellino", lat: 40.9146, lon: 14.7906, r: 1, city: 1, note: "Capoluogo della provincia più devastata: 119 comuni irpini colpiti." },
   { n: "Benevento", lat: 41.1297, lon: 14.7826, r: 1, city: 1, note: "Una delle otto province coinvolte." },
-  { n: "Potenza", lat: 40.6404, lon: 15.8038, r: 1, city: 1, note: "Provincia coinvolta. In Basilicata i morti furono circa 140." }
+  { n: "Potenza", lat: 40.6404, lon: 15.8038, r: 1, city: 1, note: "Capoluogo lucano. In Basilicata, l'altra regione colpita, i morti furono circa 140." }
 ];
 /* Edificio di via Stadera (Napoli, Poggioreale) */
 const STADERA = { lat: 40.858, lon: 14.296 };
@@ -44,15 +44,15 @@ const STADERA = { lat: 40.858, lon: 14.296 };
 const CONVOYS = [["Salerno","Laviano"],["Avellino","Sant'Angelo dei Lombardi"],["Napoli","Lioni"],["Potenza","Balvano"],["Avellino","Conza della Campania"]];
 
 const EVENTS = [
-  { t: 0,   c: "19:34:52", h: "Prima rottura", x: "La faglia si spezza a circa 12 km di profondità, tra Teora, Conza e Castelnuovo. Partono le onde P, poi le S, più lente e distruttive." },
-  { t: 20,  c: "+20 s", h: "Seconda rottura", x: "Si attiva un secondo segmento verso sud-est, in direzione della piana di San Gregorio Magno." },
-  { t: 40,  c: "+40 s", h: "Terza rottura", x: "Si rompe un terzo segmento, a nord-est del primo. La frattura arriva in superficie: una scarpata visibile per 35–38 km." },
-  { t: 52,  c: "+52 s", h: "La scossa continua", x: "Le onde dei tre sottoeventi si sovrappongono. È domenica sera e molti sono in casa o a messa. Le fonti riportano circa 90 secondi di scossa." },
-  { t: 90,  c: "19:36", h: "Fine della scossa", x: "Le luci si spengono. Interi paesi restano isolati per giorni." },
-  { t: 104, c: "24 nov", h: "La conta dei morti", x: "I soccorsi faticano a raggiungere i paesi del cratere. Il bilancio sale di ora in ora." },
-  { t: 118, c: "25 nov", h: "Pertini nel cratere", x: "Il presidente Pertini arriva in elicottero, nonostante il parere contrario di governo e consiglieri." },
-  { t: 132, c: "26 nov", h: "«Fate presto»", x: "Il titolo de Il Mattino denuncia la lentezza dei soccorsi. Si organizza la macchina dell'emergenza, con il commissario Zamberletti." },
-  { t: 144, c: "Bilancio", h: "Bilancio accertato", x: "Circa 3.000 morti, quasi 9.000 feriti, 280.000 sfollati. Il 74% dei fabbricati dei comuni colpiti risulta danneggiato." }
+  { t: 0,   c: "19:34:52", h: "La prima rottura", x: "La faglia si spezza a circa 12 km di profondità, sotto Teora, Conza e Castelnuovo. Partono le onde P, più veloci, e subito dopo le S: più lente, ma sono loro a far crollare le case." },
+  { t: 20,  c: "+20 s", h: "La seconda rottura", x: "Venti secondi dopo cede un secondo segmento, più a sud-est, verso la piana di San Gregorio Magno." },
+  { t: 40,  c: "+40 s", h: "La terza rottura", x: "A quaranta secondi si rompe un terzo segmento, a nord-est del primo. La frattura arriva fino in superficie e apre una scarpata lunga 35–38 km." },
+  { t: 52,  c: "+52 s", h: "La terra non smette di tremare", x: "Le onde delle tre rotture si sommano. È domenica sera: molti sono in casa, altri in chiesa per la messa. Le testimonianze parlano di circa novanta secondi di scossa." },
+  { t: 90,  c: "19:36", h: "Silenzio e buio", x: "La scossa finisce. Va via la luce, e interi paesi resteranno isolati per giorni." },
+  { t: 104, c: "24 nov", h: "Si scava tra le macerie", x: "I soccorsi faticano a raggiungere i paesi del cratere. Il bilancio cresce di ora in ora." },
+  { t: 118, c: "25 nov", h: "Pertini nel cratere", x: "Il presidente della Repubblica Sandro Pertini arriva in elicottero nelle zone colpite, contro il parere del governo e dei suoi consiglieri." },
+  { t: 132, c: "26 nov", h: "«Fate presto»", x: "Il Mattino titola «Fate presto», un grido contro la lentezza dei soccorsi. L'emergenza passa nelle mani del commissario straordinario Giuseppe Zamberletti." },
+  { t: 144, c: "Bilancio", h: "Il bilancio", x: "Quasi 3.000 morti, circa 9.000 feriti, almeno 280.000 sfollati. Nei comuni colpiti tre edifici su quattro risultano danneggiati." }
 ];
 
 const FINAL = { crolle: 75000, gravi: 275000, lievi: 480000, morti: 2914, feriti: 8848, sfollati: 280000 };

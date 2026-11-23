@@ -13,11 +13,27 @@
 <body>
 <main>
   <header>
-    <h1>Terremoto dell'Irpinia, 23 novembre 1980</h1>
-    <p>Domenica, ore <b>19:34:52</b> · Mw 6,9 · X grado MCS · tre rotture di faglia in circa 40 secondi</p>
+    <h1>23 novembre 1980, ore 19:34. Trema l'Irpinia</h1>
+    <p>Magnitudo <b>6,9</b>, decimo grado della scala Mercalli (MCS). In una quarantina di secondi si rompono tre segmenti di faglia, e la terra trema per circa novanta. Questa simulazione ripercorre quei secondi e i giorni che seguirono.</p>
   </header>
 
-  <div id="mapwrap"><canvas id="map" aria-label="Mappa animata della propagazione delle onde sismiche in Campania e Basilicata"></canvas></div>
+  <section class="audio" aria-label="Audio originale">
+    <div class="audio-txt">
+      <p class="audio-kicker">Audio originale · Radio Alfa</p>
+      <p>La registrazione di <b>Radio Alfa</b> in quei minuti: la scossa si sente dal decimo secondo. Con l'audio attivo, suono e simulazione restano allineati.</p>
+    </div>
+    <button id="tgAudio" type="button" aria-pressed="false">Ascolta l'audio</button>
+  </section>
+
+  <div id="mapwrap">
+    <canvas id="map" aria-label="Mappa animata della propagazione delle onde sismiche in Campania e Basilicata"></canvas>
+    <div class="zoomctl" role="group" aria-label="Zoom della mappa">
+      <button id="zin" type="button" aria-label="Ingrandisci">+</button>
+      <button id="zout" type="button" aria-label="Riduci">−</button>
+      <button id="zreset" type="button" aria-label="Mostra tutta la mappa">⤢</button>
+    </div>
+  </div>
+  <p class="hint">Ingrandisci con i pulsanti, con un doppio clic, con Ctrl + rotella o con due dita. Trascina per spostarti, tocca un paese per leggerne la storia.</p>
 
   <div id="scrubrow">
     <input id="scrub" type="range" min="0" max="150" step="0.1" value="0" aria-label="Scorri la simulazione">
@@ -32,7 +48,6 @@
     <button type="button" data-speed="2" aria-pressed="false">2×</button>
     <button type="button" data-speed="4" aria-pressed="false">4×</button>
     <button id="tgInt" type="button" aria-pressed="true">Intensità</button>
-    <button id="tgAudio" type="button" aria-pressed="false">Audio</button>
   </div>
 
   <section class="card" aria-live="polite">
@@ -60,8 +75,9 @@
   <section class="card" id="town"></section>
 
   <section class="fine">
-    <p><b>Come leggere la simulazione.</b> Le tre rotture partono a 0, 20 e 40 s. Le onde S viaggiano a circa 3,5 km/s, le P a circa 6 km/s. Il colore mostra l'intensità MCS calcolata con un modello semplificato di distanza dalla faglia, non le isosiste storiche. Posizione e forma dei segmenti, e il sismogramma, sono illustrativi. Case e crolli nei paesi sono simboli proporzionali al danno, non edifici reali.</p>
-    <p><b>Numeri.</b> Morti: 2.914 è la cifra più citata; altre fonti danno 2.570 o 2.734. Sfollati: da circa 280.000 a oltre 400.000 a seconda della fonte. Case: circa 75.000 crollate, 275.263 gravemente e 479.973 lievemente danneggiate (dati del Commissario straordinario). Profondità dell'ipocentro: 10–15 km nelle stime più citate. Durata: la rottura si completa in circa 40 s, la scossa riportata dura circa 90 s. I decessi sono accertati nei giorni successivi, non nell'istante della scossa.</p>
+    <p><b>Come leggere la simulazione.</b> Le tre rotture partono a 0, 20 e 40 secondi. I cerchi arancioni sono le onde S, che viaggiano a circa 3,5 km/s; quelli azzurri le onde P, a circa 6 km/s. Il colore della mappa indica l'intensità MCS stimata con un modello semplificato, basato sulla distanza dalla faglia: non riproduce le isosiste storiche. La posizione dei segmenti di faglia e il sismogramma sono illustrativi; le case nei paesi sono simboli proporzionali al danno, non edifici reali.</p>
+    <p><b>I numeri.</b> Le fonti non concordano. Per i morti la cifra più citata è 2.914, ma altre riportano 2.570 o 2.734; gli sfollati vanno da circa 280.000 a oltre 400.000. Secondo i dati del Commissario straordinario, circa 75.000 case crollarono, 275.263 furono gravemente danneggiate e 479.973 in modo lieve. L'ipocentro si trovava fra 10 e 15 km di profondità. La rottura si completò in circa 40 secondi, mentre la scossa avvertita durò circa 90. I morti vennero contati nei giorni successivi, man mano che si scavava: il contatore della simulazione segue questo ritmo.</p>
+    <p><b>Audio.</b> Registrazione originale di Radio Alfa.</p>
     <p><b>Fonti.</b> INGV (scheda speciale Campania e articoli per il quarantennale), Protezione Civile, Commissario straordinario per il sisma, Westaway 1993, Bernard e Zollo 1989, Il Post, Sky TG24, AGI, MeteoWeb, Porfido et al. 2020.</p>
   </section>
 </main>

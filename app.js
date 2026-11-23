@@ -147,37 +147,48 @@ function drawAftermath() {
     cx.fillStyle = "#8cd2ff"; cx.beginPath(); cx.arc(A.x + (B.x - A.x) * q, A.y + (B.y - A.y) * q, 5, 0, 6.283); cx.fill();
   });
 }
+const SHORT = { "Sant'Angelo dei Lombardi": "Sant'Angelo d. L.", "Conza della Campania": "Conza", "Castelnuovo di Conza": "Castelnuovo" };
+const RANK = t => (t === sel ? 0 : t.r === 1 ? 1 : t.r === 2 ? 2 : 3);
 function drawLabels() {
-  const fs = Math.max(12, 11 / S); cx.font = `600 ${fs}px "IBM Plex Sans", sans-serif`; cx.textBaseline = "middle"; cx.lineJoin = "round";
+  const px = 1 / (S * V.z), base = S < 0.6 ? 13 : 15, sz = S * V.z;  /* px = un pixel dello schermo in unità della mappa */
+  cx.textBaseline = "middle"; cx.lineJoin = "round";
   const placed = [];
-  towns.forEach(tn => {
-    if (tn.r === 0 && sel !== tn) return; if (tn.r === 2 && S < 0.6 && sel !== tn) return;
-    const lab = tn.n.replace("Sant'Angelo dei Lombardi", "Sant'Angelo d. L.").replace("Conza della Campania", "Conza").replace("Castelnuovo di Conza", "Castelnuovo");
-    const w = cx.measureText(lab).width, x = tn.p.x + (tn.city ? 0 : 14), y = tn.p.y - (tn.city ? 38 : 0) + (tn.n === "Lioni" ? 14 : 0);
-    const box = { x0: x, x1: x + w, y0: y - fs / 2, y1: y + fs / 2 };
+  [...towns].sort((a, b) => RANK(a) - RANK(b)).forEach(tn => {
+    if (sel !== tn && (tn.r === 0 && V.z < 2 || tn.r === 2 && sz < 0.6)) return;
+    const lab = V.z >= 1.8 ? tn.n : SHORT[tn.n] || tn.n, fs = (tn.city ? base + 2 : base) * px;
+    cx.font = `${tn.city ? 700 : 600} ${fs}px "IBM Plex Sans", sans-serif`;
+    const w = cx.measureText(lab).width;
+    const right = V.x + G.W / V.z - 60 * px, x0 = tn.city ? tn.p.x - w / 2 : tn.p.x + 17;
+    const left = V.x + 6 * px, top = V.y + fs;
+    const x = Math.max(left, x0 + w > right ? (tn.city ? right - w : tn.p.x - 17 - w) : x0);
+    const y = Math.max(top, tn.city ? tn.p.y - 32 - fs * 0.6 : tn.p.y + (tn.n === "Lioni" && V.z < 1.8 ? 14 : 0));
+    const pad = 3 * px, box = { x0: x - pad, x1: x + w + pad, y0: y - fs * 0.6, y1: y + fs * 0.6 };
     if (sel !== tn && placed.some(b => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0)) return;
     placed.push(box);
-    cx.strokeStyle = "rgba(11,17,23,.9)"; cx.lineWidth = 4; cx.strokeText(lab, x, y);
-    cx.fillStyle = sel === tn ? C.hot : C.ink; cx.fillText(lab, x, y);
+    cx.textAlign = "left";
+    cx.strokeStyle = "rgba(8,12,16,.94)"; cx.lineWidth = fs * 0.34; cx.strokeText(lab, x, y);
+    cx.fillStyle = sel === tn ? C.hot : tn.city ? "#ffffff" : "#f3eee4"; cx.fillText(lab, x, y);
   });
-  if (sel) { cx.strokeStyle = C.hot; cx.lineWidth = 2.5; cx.beginPath(); cx.arc(sel.p.x, sel.p.y, sel.city ? 38 : 24, 0, 6.283); cx.stroke(); }
+  if (sel) { cx.strokeStyle = C.hot; cx.lineWidth = 2.5 * px; cx.beginPath(); cx.arc(sel.p.x, sel.p.y, sel.city ? 38 : 24, 0, 6.283); cx.stroke(); }
 }
 function drawChrome() {
-  const fs = Math.max(11, 10 / S);
+  const fs = Math.max(12, 12 / S), kmPx = G.PX * V.z, km = [50, 20, 10, 5, 2, 1].find(k => k * kmPx <= 220) || 1;
   cx.font = `500 ${fs}px "IBM Plex Mono", monospace`; cx.textBaseline = "alphabetic";
-  const L = 20 * G.PX, bx = 24, by = G.H - 22;
+  const L = km * kmPx, bx = 24, by = G.H - 12 - fs;
   cx.strokeStyle = C.ink; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(bx, by - 6); cx.lineTo(bx, by); cx.lineTo(bx + L, by); cx.lineTo(bx + L, by - 6); cx.stroke();
-  cx.fillStyle = C.ink; cx.fillText("20 km", bx, by - 10);
-  const lw = 170, lx = G.W - lw - 24;
-  for (let i = 0; i < lw; i++) { const c = mcsRGB(5 + (i / lw) * 5); cx.fillStyle = `rgb(${c[0]|0},${c[1]|0},${c[2]|0})`; cx.fillRect(lx + i, by - 12, 1.5, 10); }
+  cx.fillStyle = C.ink; cx.fillText(km + " km", bx, by - 10);
+  const lw = Math.max(170, fs * 13), lx = G.W - lw - 24;
+  for (let i = 0; i < lw; i++) { const c = mcsRGB(5 + (i / lw) * 5); cx.fillStyle = `rgb(${c[0]|0},${c[1]|0},${c[2]|0})`; cx.fillRect(lx + i, by - fs, 1.5, fs * 0.8); }
   cx.fillStyle = C.mute; cx.textAlign = "center";
-  ["V", "VI", "VII", "VIII", "IX", "X"].forEach((t, i) => cx.fillText(t, lx + (i / 5) * (lw - 8) + 4, by - 16));
-  cx.textAlign = "left"; cx.fillText("Intensità MCS (modello)", lx, by + 14);
+  ["V", "VI", "VII", "VIII", "IX", "X"].forEach((t, i) => cx.fillText(t, lx + (i / 5) * (lw - 8) + 4, by - fs * 1.3));
+  cx.textAlign = "left"; cx.fillText("Intensità MCS (modello)", lx, by + fs * 0.9);
 }
 function drawMap() {
+  const k = DPR * S * V.z;
   cx.setTransform(DPR * S, 0, 0, DPR * S, 0, 0);
   cx.fillStyle = C.sea; cx.fillRect(0, 0, G.W, G.H);
-  const sh = shakeAmp(T);
+  cx.setTransform(k, 0, 0, k, -V.x * k, -V.y * k);
+  const sh = shakeAmp(T) / V.z;
   cx.save(); if (sh > 0.1) cx.translate((Math.random() - .5) * sh, (Math.random() - .5) * sh);
   cx.fillStyle = C.land; cx.fill(LAND);
   cx.strokeStyle = "rgba(255,255,255,.05)"; cx.lineWidth = 1; cx.beginPath();
@@ -187,7 +198,7 @@ function drawMap() {
   if (showInt) drawIntensity();
   cx.strokeStyle = C.coast; cx.lineWidth = 2.5; cx.stroke(LAND);
   drawWaves(); drawFaults(); drawTowns(); drawAftermath(); drawLabels();
-  cx.restore(); drawChrome();
+  cx.restore(); cx.setTransform(DPR * S, 0, 0, DPR * S, 0, 0); drawChrome();
 }
 
 /* ---------- sismogramma ---------- */
@@ -224,13 +235,13 @@ function updateUI() {
   let ev = EVENTS[0]; EVENTS.forEach(e => { if (T >= e.t) ev = e; });
   $("#clock").textContent = T < T1 ? "19:34:52 + " + Math.floor(T) + " s" : ev.c === "19:36" ? "23 nov, 19:36" : "dopo · " + ev.c;
   $("#ev-h").textContent = ev.h; $("#ev-x").textContent = ev.x;
-  $("#phase").textContent = T < T1 ? "Atto 1 · i 90 secondi (tempo reale)" : "Atto 2 · ore e giorni dopo (tempo accelerato)";
+  $("#phase").textContent = T < T1 ? "Atto 1 · i 90 secondi, in tempo reale" : "Atto 2 · le ore e i giorni dopo, in tempo accelerato";
   const r = $("#scrub"); if (document.activeElement !== r) r.value = T;
   $("#play").textContent = playing ? "Pausa" : T >= TMAX ? "Rivedi" : "Riprendi";
 }
 function showTown(t) {
   $("#town").innerHTML = t ? `<h3>${t.n}</h3><p class="mcs">Intensità stimata dal modello: <b>${roman(t.I)} MCS</b></p><p>${t.note}</p>` :
-    `<h3>Tocca un paese sulla mappa</h3><p>Vedi cosa è successo in quel luogo. Le posizioni sono indicative.</p>`;
+    `<h3>Tocca un paese sulla mappa</h3><p>Leggerai cosa accadde in quel luogo. Le posizioni sono indicative.</p>`;
 }
 function resize() {
   const w = $("#mapwrap").clientWidth; S = w / G.W;
@@ -257,13 +268,63 @@ document.querySelectorAll("[data-speed]").forEach(b => b.onclick = () => {
   speed = +b.dataset.speed; document.querySelectorAll("[data-speed]").forEach(x => x.setAttribute("aria-pressed", x === b));
 });
 $("#tgInt").onclick = e => { showInt = !showInt; e.currentTarget.setAttribute("aria-pressed", showInt); };
-$("#tgAudio").onclick = e => { audioOn = !audioOn; e.currentTarget.setAttribute("aria-pressed", audioOn); if (audioOn && T >= T1) { T = 0; playing = true; } };
-cv.addEventListener("pointerdown", e => {
-  const r = cv.getBoundingClientRect(), x = (e.clientX - r.left) / S, y = (e.clientY - r.top) / S;
-  let best = null, bd = 30 / S + 6;
+$("#tgAudio").onclick = e => {
+  audioOn = !audioOn; e.currentTarget.setAttribute("aria-pressed", audioOn);
+  e.currentTarget.textContent = audioOn ? "Disattiva audio" : "Ascolta l'audio";
+  if (audioOn && (T >= T1 || !playing)) { if (T >= T1) T = 0; playing = true; }
+};
+/* ---------- zoom e spostamento della mappa ---------- */
+const V = { z: 1, x: 0, y: 0 }, ZMAX = 6;
+function clampView() {
+  V.z = clamp(V.z, 1, ZMAX); V.x = clamp(V.x, 0, G.W - G.W / V.z); V.y = clamp(V.y, 0, G.H - G.H / V.z);
+  cv.style.touchAction = V.z > 1 ? "none" : "pan-y"; cv.style.cursor = V.z > 1 ? "grab" : "pointer";
+  $("#zout").disabled = V.z <= 1; $("#zreset").disabled = V.z <= 1; $("#zin").disabled = V.z >= ZMAX;
+}
+function zoomAt(f, sxp, syp) {
+  const wx = V.x + sxp / V.z, wy = V.y + syp / V.z;
+  V.z = clamp(V.z * f, 1, ZMAX); V.x = wx - sxp / V.z; V.y = wy - syp / V.z; clampView();
+}
+const local = e => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / S, y: (e.clientY - r.top) / S }; };
+function pick(p) {
+  const x = V.x + p.x / V.z, y = V.y + p.y / V.z; let best = null, bd = (30 / S + 6) / V.z;
   towns.forEach(t => { const d = Math.hypot(t.p.x - x, t.p.y - y); if (d < bd) { bd = d; best = t; } });
   sel = best; showTown(sel);
+}
+const ptrs = new Map(); let drag = null, pinch = null;
+cv.addEventListener("pointerdown", e => {
+  cv.setPointerCapture(e.pointerId); const p = local(e); ptrs.set(e.pointerId, p);
+  if (ptrs.size === 1) drag = { ...p, vx: V.x, vy: V.y, moved: false };
+  else if (ptrs.size === 2) {
+    const [a, b] = [...ptrs.values()], mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    pinch = { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, z: V.z, wx: V.x + mx / V.z, wy: V.y + my / V.z }; drag = null;
+  }
 });
+cv.addEventListener("pointermove", e => {
+  if (!ptrs.has(e.pointerId)) return; const p = local(e); ptrs.set(e.pointerId, p);
+  if (pinch && ptrs.size === 2) {
+    const [a, b] = [...ptrs.values()], mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    V.z = clamp(pinch.z * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d, 1, ZMAX); V.x = pinch.wx - mx / V.z; V.y = pinch.wy - my / V.z; clampView();
+  } else if (drag) {
+    const dx = p.x - drag.x, dy = p.y - drag.y;
+    if (Math.hypot(dx, dy) * S > 5) drag.moved = true;
+    if (drag.moved && V.z > 1) { cv.style.cursor = "grabbing"; V.x = drag.vx - dx / V.z; V.y = drag.vy - dy / V.z; clampView(); }
+  }
+});
+function endPtr(e) {
+  if (!ptrs.has(e.pointerId)) return;
+  if (e.type === "pointerup" && drag && !drag.moved) pick(local(e));
+  ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch = null; drag = null; clampView();
+}
+cv.addEventListener("pointerup", endPtr); cv.addEventListener("pointercancel", endPtr);
+cv.addEventListener("dblclick", e => { const p = local(e); zoomAt(2, p.x, p.y); });
+cv.addEventListener("wheel", e => {
+  if (!e.ctrlKey && !e.metaKey && V.z === 1) return;  /* a mappa intera la rotella scorre la pagina */
+  e.preventDefault(); const p = local(e); zoomAt(Math.exp(-e.deltaY * (e.ctrlKey ? 0.005 : 0.0015)), p.x, p.y);
+}, { passive: false });
+$("#zin").onclick = () => zoomAt(1.6, G.W / 2, G.H / 2);
+$("#zout").onclick = () => zoomAt(1 / 1.6, G.W / 2, G.H / 2);
+$("#zreset").onclick = () => { V.z = 1; clampView(); };
+clampView();
 addEventListener("resize", resize);
 resize(); showTown(null);
 requestAnimationFrame(frame);
