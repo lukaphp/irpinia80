@@ -51,6 +51,11 @@ button[aria-pressed="true"] { border-color: var(--hot); color: var(--hot); }
 .zoomctl { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 6px; line-height: normal; }
 .zoomctl button { width: 40px; height: 40px; min-height: 40px; padding: 0; font: 600 20px/1 var(--body); background: rgba(22,29,36,.92); }
 .zoomctl button:disabled { opacity: .4; cursor: default; }
+.go3d { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center; text-decoration: none; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 10px 14px; }
+.go3d:hover { border-color: var(--hot); }
+.go3d-k { font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--hot); }
+.go3d-t { grid-column: 1; font-size: 14px; color: #d8d2c6; }
+.go3d-a { grid-column: 2; grid-row: 1 / span 2; font: 600 22px var(--body); color: var(--hot); }
 .hint { margin: -6px 0 0; font-size: 12.5px; color: var(--mute); }
 .audio { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; background: linear-gradient(90deg, rgba(255,180,84,.14), rgba(255,180,84,.03)); border: 1px solid rgba(255,180,84,.45); border-left: 4px solid var(--hot); border-radius: 6px; padding: 12px 14px; }
 .audio-txt { flex: 1 1 280px; }
