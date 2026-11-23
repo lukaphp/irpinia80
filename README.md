@@ -20,7 +20,7 @@ Nessuna dipendenza né build: basta aprire `index.html` nel browser, oppure serv
 - cursore per scorrere la timeline (0–90 s in tempo reale, poi ore e giorni in tempo accelerato)
 - **Intensità** mostra o nasconde la mappa MCS
 - **Ascolta l'audio** riproduce la registrazione originale di Radio Alfa, allineata alla scossa (che nell'audio inizia al secondo 10)
-- **zoom**: pulsanti + − ⤢, doppio clic, Ctrl + rotella o due dita; trascina per spostarti
+- **zoom**: rotella, pizzico (trackpad o due dita), doppio clic o pulsanti + − ⤢; trascina per spostarti
 - tocca un paese sulla mappa per la sua scheda
 
 ## Avvertenze

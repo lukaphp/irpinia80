@@ -318,9 +318,18 @@ function endPtr(e) {
 cv.addEventListener("pointerup", endPtr); cv.addEventListener("pointercancel", endPtr);
 cv.addEventListener("dblclick", e => { const p = local(e); zoomAt(2, p.x, p.y); });
 cv.addEventListener("wheel", e => {
-  if (!e.ctrlKey && !e.metaKey && V.z === 1) return;  /* a mappa intera la rotella scorre la pagina */
-  e.preventDefault(); const p = local(e); zoomAt(Math.exp(-e.deltaY * (e.ctrlKey ? 0.005 : 0.0015)), p.x, p.y);
+  if (V.z === 1 && e.deltaY > 0 && !e.ctrlKey) return;  /* a mappa intera, verso il basso si scorre la pagina */
+  e.preventDefault(); const p = local(e);
+  zoomAt(Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : e.deltaMode ? 0.06 : 0.002)), p.x, p.y);
 }, { passive: false });
+/* Safari su Mac: il pizzico del trackpad arriva come gesture, non come rotella */
+let g0 = 1;
+cv.addEventListener("gesturestart", e => { if (ptrs.size) return; e.preventDefault(); g0 = e.scale; });
+cv.addEventListener("gesturechange", e => {
+  if (ptrs.size) return; e.preventDefault();
+  const p = local(e); zoomAt(e.scale / g0, p.x, p.y); g0 = e.scale;
+});
+cv.addEventListener("gestureend", e => { if (!ptrs.size) e.preventDefault(); });
 $("#zin").onclick = () => zoomAt(1.6, G.W / 2, G.H / 2);
 $("#zout").onclick = () => zoomAt(1 / 1.6, G.W / 2, G.H / 2);
 $("#zreset").onclick = () => { V.z = 1; clampView(); };
