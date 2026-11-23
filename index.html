@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terremoto Irpinia 1980</title>
+<meta name="description" content="Simulazione interattiva del terremoto dell'Irpinia del 23 novembre 1980: propagazione delle onde, intensità MCS, danni e soccorsi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <h1>Terremoto dell'Irpinia, 23 novembre 1980</h1>
+    <p>Domenica, ore <b>19:34:52</b> · Mw 6,9 · X grado MCS · tre rotture di faglia in circa 40 secondi</p>
+  </header>
+
+  <div id="mapwrap"><canvas id="map" aria-label="Mappa animata della propagazione delle onde sismiche in Campania e Basilicata"></canvas></div>
+
+  <div id="scrubrow">
+    <input id="scrub" type="range" min="0" max="150" step="0.1" value="0" aria-label="Scorri la simulazione">
+    <div class="timeline"><span id="clock">19:34:52 + 0 s</span><span>0 s → 90 s → giorni dopo</span></div>
+  </div>
+
+  <div class="bar">
+    <button id="play" type="button">Pausa</button>
+    <button id="restart" type="button">Da capo</button>
+    <span class="spacer"></span>
+    <button type="button" data-speed="1" aria-pressed="true">1×</button>
+    <button type="button" data-speed="2" aria-pressed="false">2×</button>
+    <button type="button" data-speed="4" aria-pressed="false">4×</button>
+    <button id="tgInt" type="button" aria-pressed="true">Intensità</button>
+    <button id="tgAudio" type="button" aria-pressed="false">Audio</button>
+  </div>
+
+  <section class="card" aria-live="polite">
+    <div id="phase"></div>
+    <h2 id="ev-h"></h2>
+    <p id="ev-x"></p>
+  </section>
+
+  <div>
+    <p class="label">Sismogramma sintetico, 0–90 s</p>
+    <canvas id="seis" aria-label="Sismogramma illustrativo con i tre sottoeventi a 0, 20 e 40 secondi"></canvas>
+  </div>
+
+  <section class="stats" aria-label="Bilancio">
+    <div class="stat"><span>Durata scossa</span><output id="v-dur">0:00</output></div>
+    <div class="stat"><span>Case crollate</span><output id="v-crol">0</output></div>
+    <div class="stat"><span>Gravemente danneggiate</span><output id="v-gravi">0</output></div>
+    <div class="stat"><span>Lievemente danneggiate</span><output id="v-lievi">0</output></div>
+    <div class="stat dead"><span>Morti</span><output id="v-morti">—</output></div>
+    <div class="stat"><span>Feriti</span><output id="v-feriti">—</output></div>
+    <div class="stat"><span>Sfollati</span><output id="v-sfoll">—</output></div>
+    <div class="stat"><span>Comuni coinvolti</span><output>687</output></div>
+  </section>
+
+  <section class="card" id="town"></section>
+
+  <section class="fine">
+    <p><b>Come leggere la simulazione.</b> Le tre rotture partono a 0, 20 e 40 s. Le onde S viaggiano a circa 3,5 km/s, le P a circa 6 km/s. Il colore mostra l'intensità MCS calcolata con un modello semplificato di distanza dalla faglia, non le isosiste storiche. Posizione e forma dei segmenti, e il sismogramma, sono illustrativi. Case e crolli nei paesi sono simboli proporzionali al danno, non edifici reali.</p>
+    <p><b>Numeri.</b> Morti: 2.914 è la cifra più citata; altre fonti danno 2.570 o 2.734. Sfollati: da circa 280.000 a oltre 400.000 a seconda della fonte. Case: circa 75.000 crollate, 275.263 gravemente e 479.973 lievemente danneggiate (dati del Commissario straordinario). Profondità dell'ipocentro: 10–15 km nelle stime più citate. Durata: la rottura si completa in circa 40 s, la scossa riportata dura circa 90 s. I decessi sono accertati nei giorni successivi, non nell'istante della scossa.</p>
+    <p><b>Fonti.</b> INGV (scheda speciale Campania e articoli per il quarantennale), Protezione Civile, Commissario straordinario per il sisma, Westaway 1993, Bernard e Zollo 1989, Il Post, Sky TG24, AGI, MeteoWeb, Porfido et al. 2020.</p>
+  </section>
+</main>
+<audio id="snd" src="audio.mp3" preload="auto"></audio>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
